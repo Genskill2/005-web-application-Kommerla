@@ -48,7 +48,7 @@ def pet_info(pid):
                 name = name,
                 bought = format_date(bought),
                 sold = format_date(sold),
-                description = description, #TODO Not being displayed
+                description = format_date(description), #TODO Not being displayed
                 species = species,
                 tags = tags)
     return render_template("petdetail.html", **data)
@@ -67,7 +67,7 @@ def edit(pid):
                     name = name,
                     bought = format_date(bought),
                     sold = format_date(sold),
-                    description = format_date(description),
+                    description = description,
                     species = species,
                     tags = tags)
         return render_template("editpet.html", **data)
