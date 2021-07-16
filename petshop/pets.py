@@ -25,7 +25,7 @@ def search(field, value):
 def dashboard():
     conn = db.get_db()
     cursor = conn.cursor()
-    oby = request.args.get("order_by", "id") # TODO. This is currently not used. 
+    oby = request.args.get("order_by", "id") # TODO. This is currently not used.
     order = request.args.get("order", "asc")
     if order == "asc":
         cursor.execute(f"select p.id, p.name, p.bought, p.sold, s.name from pet p, animal s where p.species = s.id order by p.id")
@@ -36,7 +36,7 @@ def dashboard():
 
 
 @bp.route("/<pid>")
-def pet_info(pid): 
+def pet_info(pid):
     conn = db.get_db()
     cursor = conn.cursor()
     cursor.execute("select p.name, p.bought, p.sold, p.description, s.name from pet p, animal s where p.species = s.id and p.id = ?", [pid])
@@ -67,7 +67,7 @@ def edit(pid):
                     name = name,
                     bought = format_date(bought),
                     sold = format_date(sold),
-                    description = description,
+                    description = format_date(description),
                     species = species,
                     tags = tags)
         return render_template("editpet.html", **data)
@@ -76,8 +76,3 @@ def edit(pid):
         sold = request.form.get("sold")
         # TODO Handle sold
         return redirect(url_for("pets.pet_info", pid=pid), 302)
-        
-    
-
-
-
