@@ -18,8 +18,16 @@ def format_date(d):
 
 @bp.route("/search/<field>/<value>")
 def search(field, value):
+    conn = db.get_db()
+    cursor = conn.cursor()
+    oby = request.rgs.get("order_by", "id")
+    order = request.args.get("order", "asc")
+    if order == "asc":
+        cursor.execute(f"select t.pet,t.tag from tags_pets t where pet=pet.id, tags=tag.id")
+    else:
+        cursor.execute(f"select t.pet,t.tag from tags_pets t where pet=pet.id, tags=tag.id desc")
     # TBD
-    return ""
+    return render_template('search.html', order="desc" if order=="asc" else "asc") 
 
 @bp.route("/")
 def dashboard():
@@ -48,7 +56,7 @@ def pet_info(pid):
                 name = name,
                 bought = format_date(bought),
                 sold = format_date(sold),
-                description = format_date(description), #TODO Not being displayed
+                description = description, #TODO Not being displayed
                 species = species,
                 tags = tags)
     return render_template("petdetail.html", **data)
